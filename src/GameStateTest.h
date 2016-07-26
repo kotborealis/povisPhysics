@@ -10,6 +10,7 @@
 
 #include "GameState.h"
 #include "Logger.h"
+#include "PBody.h"
 
 namespace PovisEngine {
 
@@ -24,7 +25,7 @@ public:
 
 private:
 	short missingTexture;
-	SDL_Rect pos = {0,0,100,100};
+	PBody* b;
 };
 
 } /* namespace PovisEngine */

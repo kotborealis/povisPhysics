@@ -35,7 +35,7 @@ public:
 	Graphics* g(){return _g;}
 
 private:
-	inline void __CState(){
+	inline void CState(){
 		cState = states.back();
 	}
 	std::vector<GameState*> states;

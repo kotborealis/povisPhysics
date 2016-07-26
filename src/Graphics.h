@@ -36,12 +36,16 @@ public:
 	void render();
 
 	void drawTexture(short tId, SDL_Rect* srcrect, SDL_Rect* dstrect);
+	void drawTexture(short tId, SDL_Rect* srcrect, SDL_Rect* dstrect, double angle, SDL_Point* center);
+
+	void drawRect(SDL_Rect* rect, int r, int g, int b, int a);
 
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	short tIdCounter = 0;
+	short tIdCounter = -1;
 	std::map<short,Texture*> tMap;
+	std::map<std::string,short> fMap;
 };
 
 } /* namespace PovisEngine */

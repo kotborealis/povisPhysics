@@ -29,14 +29,13 @@ void Game::run(){
 	while(running){
 		while(SDL_PollEvent(&event)){
 			running = event.type != SDL_QUIT;
-
 			cState->handleEvent(&event);
-			cState->update();
-
-			g()->clear();
-			cState->draw();
-			g()->render();
 		}
+		cState->update();
+
+		g()->clear();
+		cState->draw();
+		g()->render();
 	}
 	Logger::info("Engine stop");
 }
@@ -44,18 +43,18 @@ void Game::run(){
 void Game::setState(GameState* newState){
 	popState();
 	states.push_back(newState);
-	__CState();
+	CState();
 }
 void Game::pushState(GameState* newState){
 	states.push_back(newState);
-	__CState();
+	CState();
 }
 void Game::popState(){
 	if(!states.empty()){
 		delete states.back();
 		states.pop_back();
 	}
-	__CState();
+	CState();
 }
 
 } /* namespace PovisEngine */

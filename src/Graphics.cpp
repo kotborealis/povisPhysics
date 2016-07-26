@@ -25,13 +25,13 @@ Graphics::Graphics(std::string title, unsigned int width, unsigned int height) {
 				Logger::error(SDL_GetError());
 			}
 			else {
-				SDL_SetRenderDrawColor(renderer,0xff,0xff,0xff,0xff);
 				if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)){
 					Logger::error(SDL_GetError());
 				}
 			}
 		}
 	}
+	loadTexture("assets/missing.png");
 }
 
 Graphics::~Graphics() {
@@ -67,6 +67,7 @@ short Graphics::loadTexture(std::string filename){
 
 	short tId = tIdCounter++;
 	tMap.insert(std::pair<short,Texture*>(tId,t));
+	fMap.insert(std::pair<std::string,short>(filename,tId));
 
 	return tId;
 }
@@ -79,6 +80,7 @@ void Graphics::removeTexture(short tId){
 }
 
 void Graphics::clear() {
+	SDL_SetRenderDrawColor(renderer,0xff,0xff,0xff,0xff);
     SDL_RenderClear(renderer);
 }
 
@@ -87,7 +89,19 @@ void Graphics::render() {
 }
 
 void Graphics::drawTexture(short tId, SDL_Rect* srcrect, SDL_Rect* dstrect){
-	SDL_RenderCopy(renderer, tMap.at(tId)->texture, srcrect, dstrect);
+	drawTexture(tId, srcrect, dstrect, 0, NULL);
+}
+void Graphics::drawTexture(short tId, SDL_Rect* srcrect, SDL_Rect* dstrect, double angle, SDL_Point* center){
+	Texture* t = tMap.at(tId);
+	if(t==NULL)
+		t = tMap.at(-1);
+
+	SDL_RenderCopyEx(renderer, t->texture, srcrect, dstrect, angle, center, SDL_FLIP_NONE);
+}
+
+void Graphics::drawRect(SDL_Rect* rect, int r, int g, int b, int a){
+	SDL_SetRenderDrawColor(renderer, r,g,b,a);
+	SDL_RenderDrawRect(renderer, rect);
 }
 
 } /* namespace PovisEngine */
