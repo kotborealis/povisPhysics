@@ -9,7 +9,8 @@
 #define ENTITYPHYSICTEST_H_
 
 #include "Entity.h"
-#include "PBody.h"
+#include "PhysicBody.h"
+#include "PhysicShapeBox.h"
 
 namespace PovisEngine {
 
@@ -17,12 +18,15 @@ class EntityPhysicTest: public Entity {
 public:
 	EntityPhysicTest(float x, float y, float w, float h);
 	~EntityPhysicTest();
-	void draw(Graphics* g);
+	void draw();
 	void update(){};
-	PBody* body;
-private:
+
 	SDL_Rect _rect;
 	SDL_Point _center = {0,0};
+	short texture;
+	PhysicBody* body;
+
+	float width, height;
 };
 
 } /* namespace PovisEngine */

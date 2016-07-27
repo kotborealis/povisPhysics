@@ -13,12 +13,9 @@
 
 namespace PovisEngine {
 
-GameStateTest::GameStateTest(Game* _game):GameState(_game){
+GameStateTest::GameStateTest(){
 	Logger::info("GameStateTest");
-	ents.push_back(new EntityPhysicTest(100,100,100,100));
-	ents.push_back(new EntityPhysicTest(200,200,50,50));
-	ents.push_back(new EntityPhysicTest(300,300,80,50));
-	ents.push_back(new EntityPhysicTest(400,400,10,10));
+	o = new EntityPhysicTest(100.f,100.f,100.f,100.f);
 }
 
 GameStateTest::~GameStateTest() {
@@ -29,19 +26,26 @@ void GameStateTest::handleEvent(SDL_Event* event){
 	if(event->type == SDL_MOUSEMOTION){
 		int x,y;
 		SDL_GetMouseState(&x,&y);
-		static_cast<EntityPhysicTest*>(ents[0])->body->setPos(v2(x,y));
 		return;
 	}
 	if(event->type == SDL_MOUSEWHEEL){
-		static_cast<EntityPhysicTest*>(ents[0])->body->rotate(event->wheel.y*15);
 	}
 }
 void GameStateTest::update(){
-
+	o->body->shape->angle++;
+	o->body->tx.angle++;
 }
 void GameStateTest::draw(){
-	for(auto it = ents.begin(); it != ents.end(); it++)
-		(*it)->draw(game->g());
+	SDL_Rect rect = {
+			o->body->tx.position.x,
+			o->body->tx.position.y,
+			o->width,
+			o->height
+	};
+	SDL_Point center = {rect.w/2,rect.h/2};
+
+	Game::i().g()->drawTexture(-1,NULL,&rect,o->body->tx.angle,&center);
+	o->draw();
 }
 
 } /* namespace PovisEngine */

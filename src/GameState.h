@@ -17,15 +17,12 @@ class Game;
 
 class GameState {
 public:
-	GameState(Game* _game);
+	GameState();
 	virtual ~GameState(){};
 
 	virtual void handleEvent(SDL_Event* event) = 0;
 	virtual void update() = 0;
 	virtual void draw() = 0;
-
-protected:
-	Game* game;
 };
 
 } /* namespace PovisEngine */

@@ -12,13 +12,14 @@
 
 #include "GameState.h"
 #include "Logger.h"
-#include "Entity.h"
+#include "EntityPhysicTest.h"
+#include "Physics.h"
 
 namespace PovisEngine {
 
 class GameStateTest: public GameState {
 public:
-	GameStateTest(Game* _game);
+	GameStateTest();
 	~GameStateTest();
 
 	void handleEvent(SDL_Event* event);
@@ -26,7 +27,8 @@ public:
 	void draw();
 
 private:
-	std::vector<Entity*> ents;
+	EntityPhysicTest* o;
+	Physics physic;
 };
 
 } /* namespace PovisEngine */

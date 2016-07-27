@@ -16,10 +16,8 @@ using namespace PovisEngine;
 
 int main( int argc, char* args[] )
 {
-	Game* game = new Game("Awoooooo");
-	GameStateTest* _ = new GameStateTest(game);
-	game->pushState(_);
-	game->run();
-	delete game;
+	GameStateTest* _ = new GameStateTest();
+	Game::i().pushState(_);
+	Game::i().run();
     return 0;
 }

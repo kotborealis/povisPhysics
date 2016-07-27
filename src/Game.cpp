@@ -10,9 +10,9 @@
 
 namespace PovisEngine {
 
-Game::Game(std::string title) {
+Game::Game() {
 	Logger::info("Initializing engine");
-	_g = new Graphics(title, 800, 600);
+	_g = new Graphics("Awoo", 800, 600);
 }
 
 Game::~Game() {

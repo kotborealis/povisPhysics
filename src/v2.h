@@ -56,6 +56,13 @@ public:
 		return v2(x / s, y / s);
 	}
 
+	bool operator>(const v2& s) const{
+		return s.x>x && s.y>y;
+	}
+	bool operator<(const v2& s) const{
+		return s.x<x && s.y<y;
+	}
+
 
 	v2& operator+=(float s) {
 		x += s;

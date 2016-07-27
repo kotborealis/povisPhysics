@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "v2.h"
-#include "PBody.h"
+#include "Logger.h"
 
 namespace PovisEngine {
 
@@ -19,11 +19,7 @@ class Physics {
 public:
 	Physics();
 	~Physics();
-	void attach(PBody* body);
-	void deattach(PBody* body);
-	void update();
 private:
-	std::vector<PBody*> body_list;
 };
 
 } /* namespace PovisEngine */

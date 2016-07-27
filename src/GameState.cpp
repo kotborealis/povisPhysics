@@ -8,5 +8,5 @@
 #include "GameState.h"
 
 namespace PovisEngine {
-	GameState::GameState(Game* _game):game(_game){}
+	GameState::GameState(){}
 } /* namespace PovisEngine */

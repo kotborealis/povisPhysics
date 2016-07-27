@@ -23,8 +23,13 @@ namespace PovisEngine {
 class GameState;
 class Game {
 public:
-	Game(std::string);
-	virtual ~Game();
+	static Game& i(){
+		return instance();
+	}
+	static Game& instance(){
+		static Game g;
+		return g;
+	}
 
 	void run();
 
@@ -36,6 +41,12 @@ public:
 	Graphics* g(){return _g;}
 
 private:
+	Game();
+	~Game();
+
+	Game(Game const&) = delete;
+	Game& operator= (Game const&) = delete;
+
 	inline void CState(){cState = states.back();}
 	std::vector<GameState*> states;
 	GameState* cState;
