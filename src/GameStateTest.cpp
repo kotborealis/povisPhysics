@@ -7,6 +7,7 @@
 
 #include "GameStateTest.h"
 #include "Game.h"
+#include "EntityPhysicTest.h"
 
 #include <iostream>
 
@@ -14,39 +15,33 @@ namespace PovisEngine {
 
 GameStateTest::GameStateTest(Game* _game):GameState(_game){
 	Logger::info("GameStateTest");
-	missingTexture = game->g()->loadTexture("assets/awo.png");
-	b = new PBody(100,100,100,100);
+	ents.push_back(new EntityPhysicTest(100,100,100,100));
+	ents.push_back(new EntityPhysicTest(200,200,50,50));
+	ents.push_back(new EntityPhysicTest(300,300,80,50));
+	ents.push_back(new EntityPhysicTest(400,400,10,10));
 }
 
 GameStateTest::~GameStateTest() {
 	Logger::info("~GameStateTest");
-	game->g()->removeTexture(missingTexture);
 }
 
 void GameStateTest::handleEvent(SDL_Event* event){
 	if(event->type == SDL_MOUSEMOTION){
 		int x,y;
 		SDL_GetMouseState(&x,&y);
-		b->setPos(v2(x,y));
+		static_cast<EntityPhysicTest*>(ents[0])->body->setPos(v2(x,y));
 		return;
 	}
 	if(event->type == SDL_MOUSEWHEEL){
-		b->rotate(event->wheel.y*15);
+		static_cast<EntityPhysicTest*>(ents[0])->body->rotate(event->wheel.y*15);
 	}
 }
 void GameStateTest::update(){
 
 }
 void GameStateTest::draw(){
-	SDL_Rect rect = {
-			b->bbox[0].x,
-			b->bbox[0].y,
-			b->width,
-			b->height
-	};
-	SDL_Point center = {0,0};
-
-	game->g()->drawTexture(missingTexture,NULL,&rect,b->rotation,&center);
+	for(auto it = ents.begin(); it != ents.end(); it++)
+		(*it)->draw(game->g());
 }
 
 } /* namespace PovisEngine */

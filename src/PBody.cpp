@@ -9,7 +9,7 @@
 
 namespace PovisEngine {
 
-PBody::PBody(float x, float y, float w, float h):Entity() {
+PBody::PBody(float x, float y, float w, float h){
 	width = w;
 	height = h;
 

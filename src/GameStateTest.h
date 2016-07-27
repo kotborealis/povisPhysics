@@ -8,9 +8,11 @@
 #ifndef GAMESTATETEST_H_
 #define GAMESTATETEST_H_
 
+#include <vector>
+
 #include "GameState.h"
 #include "Logger.h"
-#include "PBody.h"
+#include "Entity.h"
 
 namespace PovisEngine {
 
@@ -24,8 +26,7 @@ public:
 	void draw();
 
 private:
-	short missingTexture;
-	PBody* b;
+	std::vector<Entity*> ents;
 };
 
 } /* namespace PovisEngine */

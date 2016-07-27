@@ -8,14 +8,16 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
 
-#include "v2.h"
+#include "Graphics.h"
 
 namespace PovisEngine {
 
 class Entity {
 public:
-	Entity();
-	virtual ~Entity();
+	Entity(){};
+	virtual ~Entity(){};
+	virtual void draw(Graphics* g)=0;
+	virtual void update()=0;
 };
 
 } /* namespace PovisEngine */

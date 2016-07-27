@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <ctime>
 
 #include "SDL2/SDL.h"
 
@@ -35,12 +36,19 @@ public:
 	Graphics* g(){return _g;}
 
 private:
-	inline void CState(){
-		cState = states.back();
-	}
+	inline void CState(){cState = states.back();}
 	std::vector<GameState*> states;
 	GameState* cState;
 	Graphics* _g;
+
+	void update(float);
+
+	constexpr static float max_framerate = 60.f;
+	constexpr static float min_frametime = 1000 / max_framerate;
+
+	float time_buffer = 0.f;
+
+	void update_needed(const float);
 };
 
 } /* namespace PovisEngine */

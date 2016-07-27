@@ -8,11 +8,11 @@
 #ifndef PBODY_H_
 #define PBODY_H_
 
-#include "Entity.h"
+#include "v2.h"
 
 namespace PovisEngine {
 
-class PBody: public Entity {
+class PBody{
 public:
 	PBody(float x, float y, float w, float h);
 	~PBody();

@@ -6,6 +6,7 @@
  */
 
 #include "Game.h"
+#include <string>
 
 namespace PovisEngine {
 
@@ -23,6 +24,7 @@ Game::~Game() {
 
 void Game::run(){
 	bool running = true;
+	float delta = 1.f;
 	SDL_Event event;
 
 	Logger::info("Engine running");
@@ -31,13 +33,21 @@ void Game::run(){
 			running = event.type != SDL_QUIT;
 			cState->handleEvent(&event);
 		}
-		cState->update();
-
-		g()->clear();
-		cState->draw();
-		g()->render();
+		clock_t frame_start = std::clock();
+		update(delta);
+		clock_t frame_end = std::clock();
+		delta = float((frame_end - frame_start) / CLOCKS_PER_SEC);
+		if(delta<1000/60.f)
+			SDL_Delay(1000/60.f - delta);
 	}
 	Logger::info("Engine stop");
+}
+
+void Game::update(float delta){
+	cState->update();
+	g()->clear();
+	cState->draw();
+	g()->render();
 }
 
 void Game::setState(GameState* newState){
