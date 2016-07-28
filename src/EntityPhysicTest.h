@@ -11,19 +11,28 @@
 #include "Entity.h"
 #include "PhysicBody.h"
 #include "PhysicShapeBox.h"
+#include "Transform.h"
+#include "PhysicShape.h"
+#include "Material.h"
+#include "MassData.h"
+#include "Game.h"
+#include "AABB.h"
+#include "Physics.h"
 
 namespace PovisEngine {
 
 class EntityPhysicTest: public Entity {
 public:
-	EntityPhysicTest(float x, float y, float w, float h);
+	EntityPhysicTest(Physics* physic, float x, float y, float w, float h, bool isStatic);
 	~EntityPhysicTest();
 	void draw();
 	void update(){};
 
-	SDL_Rect _rect;
-	SDL_Point _center = {0,0};
-	short texture;
+	SDL_Rect renderRect;
+	SDL_Point renderCenter;
+	AABB bbox;
+	SDL_Rect renderBboxRect;
+
 	PhysicBody* body;
 
 	float width, height;

@@ -28,10 +28,14 @@ Graphics::Graphics(std::string title, unsigned int width, unsigned int height) {
 				if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)){
 					Logger::error(SDL_GetError());
 				}
+				if(TTF_Init() == -1){
+					Logger::error(SDL_GetError());
+				}
 			}
 		}
 	}
-	loadTexture("assets/missing.png");
+	fontDebug = TTF_OpenFont("assets/fonts/Monospace.ttf",16);
+	loadTexture("assets/textures/missing.png");
 }
 
 Graphics::~Graphics() {
@@ -41,6 +45,7 @@ Graphics::~Graphics() {
 	}
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -102,6 +107,16 @@ void Graphics::drawTexture(short tId, SDL_Rect* srcrect, SDL_Rect* dstrect, doub
 void Graphics::drawRect(SDL_Rect* rect, int r, int g, int b, int a){
 	SDL_SetRenderDrawColor(renderer, r,g,b,a);
 	SDL_RenderDrawRect(renderer, rect);
+}
+
+void Graphics::drawText(SDL_Rect* pos, std::string text, int r, int g, int b, int a){
+	SDL_Color color = {r,g,b,a};
+	SDL_Surface* surface = TTF_RenderText_Blended(fontDebug, text.c_str(), color);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_Rect rect = {pos->x, pos->y, surface->w, surface->h};
+	SDL_FreeSurface(surface);
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
+	SDL_DestroyTexture(texture);
 }
 
 } /* namespace PovisEngine */

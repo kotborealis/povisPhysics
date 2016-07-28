@@ -1,7 +1,7 @@
 /*
  * GameStateTest.cpp
  *
- *  Created on: 24 èþë. 2016 ã.
+ *  Created on: 24 ÑˆÑžÑ‹. 2016 Ñƒ.
  *      Author: kotborealis
  */
 
@@ -15,7 +15,10 @@ namespace PovisEngine {
 
 GameStateTest::GameStateTest(){
 	Logger::info("GameStateTest");
-	o = new EntityPhysicTest(100.f,100.f,100.f,100.f);
+	entities.push_back(new EntityPhysicTest(&physic,100.f,100.f,100.f,100.f, false));
+	entities.push_back(new EntityPhysicTest(&physic,100.f,500.f,100.f,100.f, true));
+	entities.push_back(new EntityPhysicTest(&physic,220.f,500.f,100.f,100.f, true));
+	entities.push_back(new EntityPhysicTest(&physic,340.f,500.f,100.f,100.f, true));
 }
 
 GameStateTest::~GameStateTest() {
@@ -24,28 +27,19 @@ GameStateTest::~GameStateTest() {
 
 void GameStateTest::handleEvent(SDL_Event* event){
 	if(event->type == SDL_MOUSEMOTION){
-		int x,y;
-		SDL_GetMouseState(&x,&y);
-		return;
-	}
-	if(event->type == SDL_MOUSEWHEEL){
+		int x = event->motion.x;
+		int y = event->motion.y;
+
+		EntityPhysicTest* o = static_cast<EntityPhysicTest*>(*entities.begin());
+		o->body->tx.position = v2(x,y);
 	}
 }
 void GameStateTest::update(){
-	o->body->shape->angle++;
-	o->body->tx.angle++;
+	physic.update(0.02f);
 }
 void GameStateTest::draw(){
-	SDL_Rect rect = {
-			o->body->tx.position.x,
-			o->body->tx.position.y,
-			o->width,
-			o->height
-	};
-	SDL_Point center = {rect.w/2,rect.h/2};
-
-	Game::i().g()->drawTexture(-1,NULL,&rect,o->body->tx.angle,&center);
-	o->draw();
+	for(auto it = entities.begin(); it != entities.end(); it++)
+		(*it)->draw();
 }
 
 } /* namespace PovisEngine */

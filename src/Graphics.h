@@ -13,6 +13,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "Logger.h"
 
@@ -40,12 +41,16 @@ public:
 
 	void drawRect(SDL_Rect* rect, int r, int g, int b, int a);
 
+	void drawText(SDL_Rect* pos, std::string text, int r, int g, int b, int a);
+
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	short tIdCounter = -1;
 	std::map<short,Texture*> tMap;
 	std::map<std::string,short> fMap;
+
+	TTF_Font* fontDebug;
 };
 
 } /* namespace PovisEngine */

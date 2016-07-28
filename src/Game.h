@@ -52,8 +52,6 @@ private:
 	GameState* cState;
 	Graphics* _g;
 
-	void update(float);
-
 	constexpr static float max_framerate = 60.f;
 	constexpr static float min_frametime = 1000 / max_framerate;
 

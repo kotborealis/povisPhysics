@@ -8,11 +8,12 @@
 #ifndef GAMESTATETEST_H_
 #define GAMESTATETEST_H_
 
-#include <vector>
+#include <list>
 
 #include "GameState.h"
 #include "Logger.h"
 #include "EntityPhysicTest.h"
+#include "Entity.h"
 #include "Physics.h"
 
 namespace PovisEngine {
@@ -27,7 +28,7 @@ public:
 	void draw();
 
 private:
-	EntityPhysicTest* o;
+	std::list<Entity*> entities;
 	Physics physic;
 };
 

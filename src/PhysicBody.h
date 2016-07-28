@@ -13,12 +13,18 @@
 #include "PhysicShape.h"
 #include "Material.h"
 #include "MassData.h"
+#include "AABB.h"
 
 namespace PovisEngine {
 
 class PhysicShape;
 class PhysicBody {
 public:
+	PhysicBody(unsigned short int id);
+	~PhysicBody();
+
+	AABB bbox();
+
 	PhysicShape* shape;
 	Transform tx;
 	Material material;
@@ -26,6 +32,8 @@ public:
 	v2 velocity;
 	v2 force;
 	float gravity_scale;
+
+	int bodyID;
 };
 
 } /* namespace PovisEngine */
