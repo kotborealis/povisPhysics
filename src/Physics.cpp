@@ -7,12 +7,8 @@
 
 #include "Physics.h"
 
-#include <stddef.h>
 #include <iostream>
-
-#include "AABB.h"
-#include "Graphics.h"
-#include "Transform.h"
+#include <algorithm>
 
 namespace PovisEngine {
 

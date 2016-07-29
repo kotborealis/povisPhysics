@@ -10,8 +10,17 @@
 
 #include <list>
 #include <utility>
+#include <iterator>
 
+#include "v2.h"
+#include "Logger.h"
 #include "PhysicBody.h"
+#include "PhysicShape.h"
+#include "PhysicShapeBox.h"
+#include "Game.h"
+#include "AABB.h"
+#include "Graphics.h"
+#include "Transform.h"
 
 #define PHYSICS_DEBUG true
 
