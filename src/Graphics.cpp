@@ -108,6 +108,10 @@ void Graphics::drawRect(SDL_Rect* rect, int r, int g, int b, int a){
 	SDL_SetRenderDrawColor(renderer, r,g,b,a);
 	SDL_RenderDrawRect(renderer, rect);
 }
+void Graphics::drawRect(int x, int y, int w, int h, int r, int g, int b, int a){
+	SDL_Rect _ = {x,y,w,h};
+	drawRect(&_,r,g,b,a);
+}
 
 void Graphics::drawText(SDL_Rect* pos, std::string text, int r, int g, int b, int a){
 	SDL_Color color = {r,g,b,a};
@@ -117,6 +121,10 @@ void Graphics::drawText(SDL_Rect* pos, std::string text, int r, int g, int b, in
 	SDL_FreeSurface(surface);
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 	SDL_DestroyTexture(texture);
+}
+void Graphics::drawText(int x, int y, std::string text, int r, int g, int b, int a){
+	SDL_Rect _ = {x,y};
+	drawText(&_,text,r,g,b,a);
 }
 
 } /* namespace PovisEngine */

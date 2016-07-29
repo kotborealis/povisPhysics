@@ -112,6 +112,9 @@ public:
 	float length() const {
 		return std::sqrt(x * x + y * y);
 	}
+	float square_length() const{
+		return x * x + y * y;
+	}
 	void truncate(float length) {
 		float angle = atan2f(y, x);
 		x = length * cos(angle);

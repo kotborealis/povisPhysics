@@ -9,11 +9,11 @@
 #define PHYSICS_H_
 
 #include <list>
-#include <iterator>
+#include <utility>
 
-#include "v2.h"
-#include "Logger.h"
 #include "PhysicBody.h"
+
+#define PHYSICS_DEBUG true
 
 namespace PovisEngine {
 
@@ -27,11 +27,13 @@ public:
 
 	void update(float dt);
 	void broadPhase();
+	void narrowPhase();
 
 	unsigned short int bodyIDcounter = 0;
 private:
 	bool AABBtoAABB(AABB lhs, AABB rhs);
 	std::list<PhysicBody*> bodies;
+	std::list<std::pair<PhysicBody*,PhysicBody*>> pairs;
 };
 
 } /* namespace PovisEngine */

@@ -40,8 +40,10 @@ public:
 	void drawTexture(short tId, SDL_Rect* srcrect, SDL_Rect* dstrect, double angle, SDL_Point* center);
 
 	void drawRect(SDL_Rect* rect, int r, int g, int b, int a);
+	void drawRect(int x, int y, int w, int h, int r, int g, int b, int a);
 
 	void drawText(SDL_Rect* pos, std::string text, int r, int g, int b, int a);
+	void drawText(int x, int y, std::string text, int r, int g, int b, int a);
 
 private:
 	SDL_Window* window;
