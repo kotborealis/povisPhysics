@@ -30,8 +30,6 @@ public:
 
 	SDL_Rect renderRect;
 	SDL_Point renderCenter;
-	AABB bbox;
-	SDL_Rect renderBboxRect;
 
 	PhysicBody* body;
 
