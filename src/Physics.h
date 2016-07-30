@@ -29,6 +29,17 @@
 
 namespace PovisEngine {
 
+struct Manifold{
+	bool collision;
+};
+
+struct ManifoldShapeBox: public Manifold{
+	v2 axis;
+	float overlap;
+};
+
+struct ManifoldAABB: public Manifold{};
+
 class Physics {
 public:
 	Physics();
@@ -43,7 +54,9 @@ public:
 
 	unsigned short int bodyIDcounter = 0;
 private:
-	bool AABBtoAABB(AABB lhs, AABB rhs);
+	ManifoldAABB AABB_collision(AABB, AABB);
+	ManifoldShapeBox BodyShapeBox_collision(PhysicBody*, PhysicBody*);
+
 	std::list<PhysicBody*> bodies;
 	std::list<std::pair<PhysicBody*,PhysicBody*>> pairs;
 };

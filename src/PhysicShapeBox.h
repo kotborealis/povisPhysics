@@ -9,6 +9,7 @@
 #define PHYSICSHAPEBOX_H_
 
 #include "PhysicShape.h"
+#include "PhysicBody.h"
 
 namespace PovisEngine {
 

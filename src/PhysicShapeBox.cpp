@@ -44,7 +44,7 @@ namespace PovisEngine {
 	}
 
 	float PhysicShapeBox::computeMass(Material m){
-		return m.density * width * height / 12000;
+		return m.density * width * height / 1200;
 	}
 
 	void PhysicShapeBox::rotate(float rads){

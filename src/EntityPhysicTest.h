@@ -13,8 +13,6 @@
 #include "PhysicShapeBox.h"
 #include "Transform.h"
 #include "PhysicShape.h"
-#include "Material.h"
-#include "MassData.h"
 #include "Game.h"
 #include "AABB.h"
 #include "Physics.h"
@@ -30,6 +28,8 @@ public:
 
 	SDL_Rect renderRect;
 	SDL_Point renderCenter;
+	AABB bbox;
+	SDL_Rect renderBboxRect;
 
 	PhysicBody* body;
 

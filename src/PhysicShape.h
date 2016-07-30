@@ -9,11 +9,10 @@
 #define PHYSICSHAPE_H_
 
 #include "AABB.h"
-#include "PhysicBody.h"
-#include "Material.h"
 
 namespace PovisEngine {
 class PhysicBody;
+class Material;
 class PhysicShape {
 public:
 	PhysicShape(){}

@@ -44,10 +44,18 @@ void EntityPhysicTest::draw(){
 	renderRect.w = width;
 	renderRect.h = height;
 
+	bbox = body->bbox();
+
+	renderBboxRect.x = bbox.min.x;
+	renderBboxRect.y = bbox.min.y;
+	renderBboxRect.w = bbox.max.x - bbox.min.x;
+	renderBboxRect.h = bbox.max.y - bbox.min.y;
+
 	renderCenter.x = width/2;
 	renderCenter.y = height/2;
 
 	Game::i().g()->drawTexture(-1,NULL,&renderRect,body->tx.angle,&renderCenter);
+	Game::i().g()->drawRect(&renderBboxRect, 0, 0, 0, 0xff);
 }
 
 } /* namespace PovisEngine */
