@@ -14,10 +14,10 @@ namespace PovisEngine {
 
 class PhysicShapeBox: public PhysicShape{
 public:
-	PhysicShapeBox(PhysicBody* body, float w, float h);
+	PhysicShapeBox(float w, float h);
 	~PhysicShapeBox();
 	AABB bbox();
-	float computeMass();
+	float computeMass(Material m);
 	void rotate(float rads);
 
 	float width, height;

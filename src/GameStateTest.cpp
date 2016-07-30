@@ -15,10 +15,7 @@ namespace PovisEngine {
 
 GameStateTest::GameStateTest(){
 	Logger::info("GameStateTest");
-	entities.push_back(new EntityPhysicTest(&physic,100.f,100.f,100.f,100.f, false));
-	entities.push_back(new EntityPhysicTest(&physic,100.f,500.f,100.f,100.f, true));
-	entities.push_back(new EntityPhysicTest(&physic,220.f,500.f,100.f,100.f, true));
-	entities.push_back(new EntityPhysicTest(&physic,340.f,500.f,100.f,100.f, true));
+	entities.push_back(new EntityPhysicTest(&physic,0.f,500.f,1000.f,100.f, true));
 }
 
 GameStateTest::~GameStateTest() {
@@ -26,13 +23,10 @@ GameStateTest::~GameStateTest() {
 }
 
 void GameStateTest::handleEvent(SDL_Event* event){
-	if(event->type == SDL_MOUSEMOTION){
-		int x = event->motion.x;
-		int y = event->motion.y;
-
-		EntityPhysicTest* o = static_cast<EntityPhysicTest*>(*entities.begin());
-		o->body->tx.position = v2(x,y);
-
+	if(event->type == SDL_MOUSEBUTTONDOWN){
+		SDL_GetMouseState(&mouseX,&mouseY);
+		entities.push_back(new EntityPhysicTest(&physic,mouseX,mouseY,50.f,50.f, false));
+		Logger::info(entities.size());
 		return;
 	}
 	if(event->type == SDL_MOUSEWHEEL){

@@ -42,6 +42,8 @@ public:
 	void drawRect(SDL_Rect* rect, int r, int g, int b, int a);
 	void drawRect(int x, int y, int w, int h, int r, int g, int b, int a);
 
+	void drawLine(int x1, int y1, int x2, int y2, int r, int g, int b, int a);
+
 	void drawText(SDL_Rect* pos, std::string text, int r, int g, int b, int a);
 	void drawText(int x, int y, std::string text, int r, int g, int b, int a);
 

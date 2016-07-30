@@ -30,6 +30,7 @@ public:
 private:
 	std::list<Entity*> entities;
 	Physics physic;
+	int mouseX, mouseY;
 };
 
 } /* namespace PovisEngine */

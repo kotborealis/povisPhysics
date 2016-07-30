@@ -11,6 +11,9 @@
 #include <list>
 #include <utility>
 #include <iterator>
+#include <algorithm>
+
+#include <float.h>
 
 #include "v2.h"
 #include "Logger.h"

@@ -10,23 +10,20 @@
 
 #include "AABB.h"
 #include "PhysicBody.h"
+#include "Material.h"
 
 namespace PovisEngine {
 class PhysicBody;
 class PhysicShape {
 public:
-	PhysicShape(PhysicBody* body){
-		this->body = body;
-		angle = 0;
-	}
+	PhysicShape(){}
 	virtual ~PhysicShape(){};
 	virtual AABB bbox()=0;
-	virtual float computeMass()=0;
+	virtual float computeMass(Material m)=0;
 	virtual void rotate(float rads)=0;
 
-	PhysicBody* body;
 	v2 center;
-	float angle;
+	float angle = 0;
 };
 
 } /* namespace PovisEngine */

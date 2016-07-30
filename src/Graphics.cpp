@@ -113,8 +113,13 @@ void Graphics::drawRect(int x, int y, int w, int h, int r, int g, int b, int a){
 	drawRect(&_,r,g,b,a);
 }
 
+void Graphics::drawLine(int x1, int y1, int x2, int y2, int r, int g, int b, int a){
+	SDL_SetRenderDrawColor(renderer, r,g,b,a);
+	SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
+
 void Graphics::drawText(SDL_Rect* pos, std::string text, int r, int g, int b, int a){
-	SDL_Color color = {r,g,b,a};
+	SDL_Color color = {(Uint8)r,(Uint8)g,(Uint8)b,(Uint8)a};
 	SDL_Surface* surface = TTF_RenderText_Blended(fontDebug, text.c_str(), color);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_Rect rect = {pos->x, pos->y, surface->w, surface->h};

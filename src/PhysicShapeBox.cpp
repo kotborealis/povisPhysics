@@ -10,8 +10,8 @@
 #include <algorithm>
 
 namespace PovisEngine {
-	PhysicShapeBox::PhysicShapeBox(PhysicBody* body, float w, float h)
-		:PhysicShape(body)
+	PhysicShapeBox::PhysicShapeBox(float w, float h)
+		:PhysicShape()
 		,width(w)
 		,height(h){
 			center = v2(w/2,h/2);
@@ -38,8 +38,8 @@ namespace PovisEngine {
 		return box;
 	}
 
-	float PhysicShapeBox::computeMass(){
-		return body->material.density * width * height / 12000;
+	float PhysicShapeBox::computeMass(Material m){
+		return m.density * width * height / 12000;
 	}
 
 	void PhysicShapeBox::rotate(float rads){
