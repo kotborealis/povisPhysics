@@ -14,6 +14,7 @@
 #include "Material.h"
 #include "MassData.h"
 #include "AABB.h"
+#include "Logger.h"
 
 namespace PovisEngine {
 

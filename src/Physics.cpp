@@ -72,22 +72,36 @@ void Physics::narrowPhase(){
 		const float width[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->width,dynamic_cast<PhysicShapeBox*>(b->shape)->width};
 		const float height[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->height,dynamic_cast<PhysicShapeBox*>(b->shape)->height};
 
-		corners[0] = (v2(x[0],            y[0])             - center[0]).rotate(angle[0]) + center[0]; //A.UL
-		corners[1] = (v2(x[0] + width[0], y[0])             - center[0]).rotate(angle[0]) + center[0]; //A.UR
-		corners[2] = (v2(x[0] + width[0], y[0] + height[0]) - center[0]).rotate(angle[0]) + center[0]; //A.LR
-		corners[3] = (v2(x[0],            y[0] + height[0]) - center[0]).rotate(angle[0]) + center[0]; //A.LL
+		corners[0] = (v2(x[0],            y[0])             - center[0]); //A.UL
+		corners[1] = (v2(x[0] + width[0], y[0])             - center[0]); //A.UR
+		corners[2] = (v2(x[0] + width[0], y[0] + height[0]) - center[0]); //A.LR
+		corners[3] = (v2(x[0],            y[0] + height[0]) - center[0]); //A.LL
 
-		corners[4] = (v2(x[1],            y[1])             - center[1]).rotate(angle[1]) + center[1]; //A.UL
-		corners[5] = (v2(x[1] + width[1], y[1])             - center[1]).rotate(angle[1]) + center[1]; //A.UR
-		corners[6] = (v2(x[1] + width[1], y[1] + height[1]) - center[1]).rotate(angle[1]) + center[1]; //A.LR
-		corners[7] = (v2(x[1],            y[1] + height[1]) - center[1]).rotate(angle[1]) + center[1]; //A.LL
+		for(int i = 0; i < 4; i++){
+			corners[i].rotate(angle[0]);
+			corners[i] += center[0];
+		}
+
+		corners[4] = (v2(x[1],            y[1])             - center[1]); //A.UL
+		corners[5] = (v2(x[1] + width[1], y[1])             - center[1]); //A.UR
+		corners[6] = (v2(x[1] + width[1], y[1] + height[1]) - center[1]); //A.LR
+		corners[7] = (v2(x[1],            y[1] + height[1]) - center[1]); //A.LL
 
 
-		axis[0] = (corners[1] - corners[0]).normalize(); //A.UR - A.UL
-		axis[1] = (corners[1] - corners[2]).normalize(); //A.UR - A.LR
+		for(int i = 4; i < 8; i++){
+			corners[i].rotate(angle[1]);
+			corners[i] += center[1];
+		}
 
-		axis[2] = (corners[4] - corners[7]).normalize(); //B.UL - B.LL
-		axis[3] = (corners[4] - corners[5]).normalize(); //B.UL - B.UR
+
+		axis[0] = (corners[1] - corners[0]); //A.UR - A.UL
+		axis[1] = (corners[1] - corners[2]); //A.UR - A.LR
+
+		axis[2] = (corners[4] - corners[7]); //B.UL - B.LL
+		axis[3] = (corners[4] - corners[5]); //B.UL - B.UR
+
+		for(int i = 0; i < 4; i++)
+			axis[i].normalize();
 
 		float projections[8];
 		float min[2];

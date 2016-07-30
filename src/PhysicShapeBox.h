@@ -21,6 +21,9 @@ public:
 	void rotate(float rads);
 
 	float width, height;
+
+	AABB box;
+	v2 tl, tr, bl, br;
 };
 
 } /* namespace PovisEngine */

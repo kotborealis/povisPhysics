@@ -36,7 +36,7 @@ void GameStateTest::handleEvent(SDL_Event* event){
 	}
 }
 void GameStateTest::update(){
-	//physic.update(0.02f);
+	physic.update(0.02f);
 }
 void GameStateTest::draw(){
 	for(auto it = entities.begin(); it != entities.end(); it++)

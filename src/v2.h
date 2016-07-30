@@ -9,6 +9,7 @@
 #define V2_H_
 
 #include <cmath>
+#include "Logger.h"
 
 namespace PovisEngine {
 
@@ -90,19 +91,20 @@ public:
 		this->y = y;
 	}
 
-	v2& rotate(float deg) {
+	void rotate(float deg) {
 		float theta = deg / 180.0 * 3.14;
 		float c = cos(theta);
 		float s = sin(theta);
 		float tx = x * c - y * s;
 		float ty = x * s + y * c;
-		return *new v2(tx,ty);
+		x = tx;
+		y = ty;
+		return;
 	}
 
-	v2& normalize() {
-		if (length() == 0) return *this;
-		*this *= (1.0 / length());
-		return *this;
+	void normalize() {
+		if (length() != 0);
+			*this *= (1.0 / length());
 	}
 
 	float dist(v2 v) const {

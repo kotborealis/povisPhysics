@@ -20,20 +20,25 @@ namespace PovisEngine {
 	PhysicShapeBox::~PhysicShapeBox(){};
 
 	AABB PhysicShapeBox::bbox(){
-		AABB box;
-		v2 tl = (v2(0,0) - center).rotate(angle) + center;;
-		v2 tr = (v2(width,0) - center).rotate(angle) + center;
-		v2 br = (v2(width,height) - center).rotate(angle) + center;
-		v2 bl = (v2(0,height) - center).rotate(angle) + center;
+		tl = (v2(0,0) - center);
+		tl.rotate(angle);
+		tl+=center;
+		tr = (v2(width,0) - center);
+		tr.rotate(angle);
+		tr+=center;
+		br = (v2(width,height) - center);
+		br.rotate(angle);
+		br+=center;
+		bl = (v2(0,height) - center);
+		bl.rotate(angle);
+		bl+=center;
 
-		float min_x = std::min(std::min(std::min(tl.x,tr.x),br.x),bl.x);
-		float min_y = std::min(std::min(std::min(tl.y,tr.y),br.y),bl.y);
 
-		float max_x = std::max(std::max(std::max(tl.x,tr.x),br.x),bl.x);
-		float max_y = std::max(std::max(std::max(tl.y,tr.y),br.y),bl.y);
+		box.min.x = std::min(std::min(std::min(tl.x,tr.x),br.x),bl.x);
+		box.min.y = std::min(std::min(std::min(tl.y,tr.y),br.y),bl.y);
 
-		box.min = v2(min_x,min_y);
-		box.max = v2(max_x,max_y);
+		box.max.x = std::max(std::max(std::max(tl.x,tr.x),br.x),bl.x);
+		box.max.y = std::max(std::max(std::max(tl.y,tr.y),br.y),bl.y);
 
 		return box;
 	}
