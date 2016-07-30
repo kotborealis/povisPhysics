@@ -50,7 +50,21 @@ public:
 	PhysicBody(unsigned short int id);
 	~PhysicBody();
 
-	AABB bbox();
+	inline AABB bbox(){
+		AABB box = shape->bbox();
+		box.min.x += tx.position.x;
+		box.min.y += tx.position.y;
+		box.max.x += tx.position.x;
+		box.max.y += tx.position.y;
+
+		return box;
+	}
+	inline v2 worldPosition() const{
+		return tx.position;
+	}
+	inline v2 worldCenter() const{
+		return shape->center + tx.position;
+	}
 
 	PhysicShape* shape;
 	Transform tx;

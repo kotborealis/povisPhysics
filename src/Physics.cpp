@@ -105,9 +105,9 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 	v2 axis[4];
 	v2 corners[8];
 
-	const float x[2] = {a->tx.position.x,b->tx.position.x};
-	const float y[2] = {a->tx.position.y,b->tx.position.y};
-	const v2 center[2] = {a->shape->center+a->tx.position,b->shape->center+b->tx.position};
+	const float x[2] = {a->worldPosition().x,b->worldPosition().x};
+	const float y[2] = {a->worldPosition().y,b->worldPosition().y};
+	const v2 center[2] = {a->worldCenter(),b->worldCenter()};
 	const float angle[2] = {a->shape->angle,b->shape->angle};
 	const float width[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->width,dynamic_cast<PhysicShapeBox*>(b->shape)->width};
 	const float height[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->height,dynamic_cast<PhysicShapeBox*>(b->shape)->height};
@@ -179,23 +179,6 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 		}
 	}
 	return manifold;
-//	if(collision){
-//		v2 mvt = min_overlap_axis*min_overlap;
-//		v2 atob = v2(center[1].x - center[0].x,center[1].y - center[0].y);
-//		if(v2::dot(atob, mvt) > 0)
-//			mvt = v2(-mvt.x,-mvt.y);
-//		if(a->mass_data.mass == 0 && b->mass_data.mass == 0){
-//			return;
-//		}
-//		else if(a->mass_data.mass != 0 && b->mass_data.mass != 0){
-//			a->force += mvt/2;
-//			b->force -= mvt/2;
-//		}
-//		else if(a->mass_data.mass != 0)
-//			a->force += mvt;
-//		else
-//			b->force -= mvt;
-//	}
 }
 
 } /* namespace PovisEngine */
