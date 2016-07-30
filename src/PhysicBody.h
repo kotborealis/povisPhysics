@@ -9,7 +9,6 @@
 #define PHYSICBODY_H_
 
 #include "v2.h"
-#include "Transform.h"
 #include "PhysicShape.h"
 #include "AABB.h"
 #include "Logger.h"
@@ -21,6 +20,7 @@ struct Material {
 	float restitution;//упругость
 };
 
+//Pre-defined materials
 static const Material MaterialRock = {0.6, 0.1};
 static const Material MaterialWood = {0.3, 0.2};
 static const Material MaterialMetal = {1.2, 0.05};
@@ -35,6 +35,13 @@ struct MassData {
 
 	float inertia;
 	float inv_inertia;
+};
+
+//World position
+struct Transform {
+	v2 position;
+	v2 center;
+	float angle;
 };
 
 class PhysicShape;

@@ -23,21 +23,23 @@
 #include "Game.h"
 #include "AABB.h"
 #include "Graphics.h"
-#include "Transform.h"
 
 #define PHYSICS_DEBUG true
 
 namespace PovisEngine {
 
+//Manifold base
 struct Manifold{
 	bool collision;
 };
 
+//Manifold for Box-Shape
 struct ManifoldShapeBox: public Manifold{
 	v2 axis;
 	float overlap;
 };
 
+//Manifold for AABB
 struct ManifoldAABB: public Manifold{};
 
 class Physics {
