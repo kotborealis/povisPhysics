@@ -34,7 +34,7 @@ void Physics::update(float dt){
 	broadPhase();
 	narrowPhase();
 	for(auto i = bodies.begin(); i != bodies.end(); i++)
-		(*i)->force+=v2(0,9 * (*i)->mass_data.mass);
+		(*i)->force+=v2(0,9 * (*i)->mass_data().mass);
 
 	for(auto i = bodies.begin(); i != bodies.end(); i++){
 		(*i)->tx.position+=(*i)->force;
@@ -60,18 +60,18 @@ void Physics::narrowPhase(){
 		PhysicBody* a = (*i).first;
 		PhysicBody* b = (*i).second;
 
-		if(dynamic_cast<PhysicShapeBox*>(a->shape) != NULL && dynamic_cast<PhysicShapeBox*>(b->shape) != NULL){
+		if(dynamic_cast<PhysicShapeBox*>(a->shape()) != NULL && dynamic_cast<PhysicShapeBox*>(b->shape()) != NULL){
 			ManifoldShapeBox manifold = BodyShapeBox_collision(a,b);
 			if(manifold.collision){
 				v2 mvt = manifold.axis*manifold.overlap;
-				if(a->mass_data.mass == 0 && b->mass_data.mass == 0){
+				if(a->mass_data().mass == 0 && b->mass_data().mass == 0){
 					return;
 				}
-				else if(a->mass_data.mass != 0 && b->mass_data.mass != 0){
+				else if(a->mass_data().mass != 0 && b->mass_data().mass != 0){
 					a->force += mvt/2;
 					b->force -= mvt/2;
 				}
-				else if(a->mass_data.mass != 0)
+				else if(a->mass_data().mass != 0)
 					a->force += mvt;
 				else
 					b->force -= mvt;
@@ -97,7 +97,7 @@ ManifoldAABB Physics::AABB_collision(AABB a, AABB b){
 ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 	ManifoldShapeBox manifold;
 
-	if(dynamic_cast<PhysicShapeBox*>(a->shape) == NULL || dynamic_cast<PhysicShapeBox*>(b->shape) == NULL){
+	if(dynamic_cast<PhysicShapeBox*>(a->shape()) == NULL || dynamic_cast<PhysicShapeBox*>(b->shape()) == NULL){
 		manifold.collision = false;
 		return manifold;
 	}
@@ -105,12 +105,12 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 	v2 axis[4];
 	v2 corners[8];
 
-	const float x[2] = {a->worldPosition().x,b->worldPosition().x};
-	const float y[2] = {a->worldPosition().y,b->worldPosition().y};
-	const v2 center[2] = {a->worldCenter(),b->worldCenter()};
-	const float angle[2] = {a->shape->getAngle(),b->shape->getAngle()};
-	const float width[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->width,dynamic_cast<PhysicShapeBox*>(b->shape)->width};
-	const float height[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->height,dynamic_cast<PhysicShapeBox*>(b->shape)->height};
+	const float x[2] = {a->position().x,b->position().x};
+	const float y[2] = {a->position().y,b->position().y};
+	const v2 center[2] = {a->center(),b->center()};
+	const float angle[2] = {a->shape()->angle(),b->shape()->angle()};
+	const float width[2] = {dynamic_cast<PhysicShapeBox*>(a->shape())->width(),dynamic_cast<PhysicShapeBox*>(b->shape())->width()};
+	const float height[2] = {dynamic_cast<PhysicShapeBox*>(a->shape())->height(),dynamic_cast<PhysicShapeBox*>(b->shape())->height()};
 
 	corners[0] = (v2(x[0],            y[0])             - center[0]);
 	corners[1] = (v2(x[0] + width[0], y[0])             - center[0]);

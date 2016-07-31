@@ -33,6 +33,8 @@ public:
 	short loadTexture(std::string filename);
 	void removeTexture(short tId);
 
+	short lookUpTextureByFilename(std::string filename);
+
 	void clear();
 	void render();
 

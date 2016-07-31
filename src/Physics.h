@@ -17,7 +17,6 @@
 
 #include "v2.h"
 #include "Logger.h"
-#include "PhysicBody.h"
 #include "PhysicShape.h"
 #include "PhysicShapeBox.h"
 #include "Game.h"
@@ -41,6 +40,8 @@ struct ManifoldShapeBox: public Manifold{
 
 //Manifold for AABB
 struct ManifoldAABB: public Manifold{};
+
+class PhysicBody;
 
 class Physics {
 public:

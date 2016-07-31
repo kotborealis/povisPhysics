@@ -25,14 +25,16 @@ GameStateTest::~GameStateTest() {
 void GameStateTest::handleEvent(SDL_Event* event){
 	if(event->type == SDL_MOUSEBUTTONDOWN){
 		SDL_GetMouseState(&mouseX,&mouseY);
-		entities.push_back(new EntityPhysicTest(&physic,mouseX,mouseY,50.f,50.f, false));
+		for(int i = 0; i < 10; i++){
+			entities.push_back(new EntityPhysicTest(&physic,mouseX+i*51,mouseY,50.f,50.f, false));
+		}
 		Logger::info(entities.size());
 		return;
 	}
 	if(event->type == SDL_MOUSEWHEEL){
 		EntityPhysicTest* o = static_cast<EntityPhysicTest*>(*entities.begin());
 		o->body->tx.angle += event->wheel.y;
-		o->body->shape->rotate(event->wheel.y);
+		o->body->shape()->rotate(event->wheel.y);
 	}
 }
 void GameStateTest::update(){

@@ -9,6 +9,7 @@
 #define PHYSICBODY_H_
 
 #include "v2.h"
+#include "Physics.h"
 #include "PhysicShape.h"
 #include "AABB.h"
 #include "Logger.h"
@@ -17,7 +18,7 @@ namespace PovisEngine {
 
 struct Material {
 	float density;
-	float restitution;//упругость
+	float restitution;
 };
 
 //Pre-defined materials
@@ -44,14 +45,15 @@ struct Transform {
 	float angle;
 };
 
-class PhysicShape;
+class Physics;
+
 class PhysicBody {
 public:
-	PhysicBody(unsigned short int id);
+	PhysicBody(Physics*, PhysicShape*, Transform, Material, float = 1, bool = false);
 	~PhysicBody();
 
-	inline AABB bbox(){
-		AABB box = shape->bbox();
+	AABB bbox(){
+		AABB box = m_shape->bbox();
 		box.min.x += tx.position.x;
 		box.min.y += tx.position.y;
 		box.max.x += tx.position.x;
@@ -59,22 +61,34 @@ public:
 
 		return box;
 	}
-	inline v2 worldPosition() const{
-		return tx.position;
-	}
-	inline v2 worldCenter() const{
-		return shape->center + tx.position;
-	}
+	v2 position() const {return tx.position;}
+	v2 center() const {return m_shape->center() + tx.position;}
 
-	PhysicShape* shape;
-	Transform tx;
-	Material material;
-	MassData mass_data;
-	v2 velocity;
+	PhysicShape* shape() const {return m_shape;}
+
+	MassData mass_data() const {return m_mass_data;}
+
+	int id() const {return m_id;}
+
+
 	v2 force;
-	float gravity_scale;
+	v2 velocity;
+	v2 acceleration;
+	v2 angular_velocity;
+	v2 angular_acceleration;
 
-	int bodyID;
+	Transform tx;
+
+private:
+	int m_id;
+
+	Physics* m_physic;
+	PhysicShape* m_shape;
+
+	Material m_material;
+	MassData m_mass_data;
+
+	float m_gravity_scale;
 };
 
 } /* namespace PovisEngine */

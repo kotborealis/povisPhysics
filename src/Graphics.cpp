@@ -51,7 +51,14 @@ Graphics::~Graphics() {
 }
 
 short Graphics::loadTexture(std::string filename){
-	Logger::info(std::string("Loading texture ")+filename);
+	Logger::info("Loading texture "<<filename);
+
+	short _id = lookUpTextureByFilename(filename);
+	if(_id != -1){
+		Logger::info("Already loaded");
+		return _id;
+	}
+
 	Texture* t = new Texture();
 	auto loadedSurface = IMG_Load(filename.c_str());
 
@@ -77,9 +84,17 @@ short Graphics::loadTexture(std::string filename){
 	return tId;
 }
 
+short Graphics::lookUpTextureByFilename(std::string filename){
+	for(auto it = tMap.begin(); it!=tMap.end(); it++)
+			if(it->second->filename == filename)
+				return it->second->tId;
+
+	return -1;
+}
+
 void Graphics::removeTexture(short tId){
 	auto t = tMap.at(tId);
-	Logger::info(std::string("Destroying texture ")+t->filename);
+	Logger::info("Destroying texture "<<t->filename);
 	SDL_DestroyTexture(t->texture);
 	tMap.erase(tId);
 }

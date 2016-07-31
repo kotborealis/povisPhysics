@@ -17,16 +17,18 @@ class PhysicShape {
 public:
 	PhysicShape(){}
 	virtual ~PhysicShape(){};
-	virtual AABB bbox()=0;
-	virtual float computeMass(Material m)=0;
-	virtual void rotate(float rads)=0;
-	float getAngle(){
-		return angle;
-	}
 
-	v2 center;
+	virtual AABB bbox()=0;
+	virtual float mass(Material)=0;
+
+	virtual void rotate(float)=0;
+
+	float angle(){return m_angle;}
+	v2 center(){return m_center;}
+
 protected:
-	float angle = 0;
+	float m_angle = 0;
+	v2 m_center;
 };
 
 } /* namespace PovisEngine */

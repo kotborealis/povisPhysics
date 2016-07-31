@@ -17,16 +17,20 @@ class PhysicShapeBox: public PhysicShape{
 public:
 	PhysicShapeBox(float w, float h);
 	~PhysicShapeBox();
-	AABB bbox();
-	float computeMass(Material m);
-	void rotate(float rads);
 
-	float width, height;
+	AABB bbox();
+	float mass(Material);
+
+	void rotate(float);
+
+	float width(){return m_width;}
+	float height(){return m_height;}
 
 private:
 	void calcBbox();
-	AABB box;
-	v2 tl, tr, bl, br;
+
+	AABB m_box;
+	float m_width, m_height;
 };
 
 } /* namespace PovisEngine */

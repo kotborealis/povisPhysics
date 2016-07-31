@@ -12,46 +12,46 @@
 namespace PovisEngine {
 	PhysicShapeBox::PhysicShapeBox(float w, float h)
 		:PhysicShape()
-		,width(w)
-		,height(h){
-			center = v2(w/2,h/2);
+		,m_width(w)
+		,m_height(h){
+			m_center = v2(w/2,h/2);
 			calcBbox();
 		}
 
 	PhysicShapeBox::~PhysicShapeBox(){};
 
 	AABB PhysicShapeBox::bbox(){
-		return box;
+		return m_box;
 	}
 
-	float PhysicShapeBox::computeMass(Material m){
-		return m.density * width * height / 1200;
+	float PhysicShapeBox::mass(Material m){
+		return m.density * m_width * m_height / 1200;
 	}
 
 	void PhysicShapeBox::rotate(float rads){
-		angle += rads;
+		m_angle += rads;
 		calcBbox();
 	}
 
 	void PhysicShapeBox::calcBbox(){
-		tl = (v2(0,0) - center);
-		tl.rotate(angle);
-		tl+=center;
-		tr = (v2(width,0) - center);
-		tr.rotate(angle);
-		tr+=center;
-		br = (v2(width,height) - center);
-		br.rotate(angle);
-		br+=center;
-		bl = (v2(0,height) - center);
-		bl.rotate(angle);
-		bl+=center;
+		v2 tl = (v2(0,0) - m_center);
+		tl.rotate(m_angle);
+		tl+=m_center;
+		v2 tr = (v2(m_width,0) - m_center);
+		tr.rotate(m_angle);
+		tr+=m_center;
+		v2 br = (v2(m_width,m_height) - m_center);
+		br.rotate(m_angle);
+		br+=m_center;
+		v2 bl = (v2(0,m_height) - m_center);
+		bl.rotate(m_angle);
+		bl+=m_center;
 
 
-		box.min.x = std::min(std::min(std::min(tl.x,tr.x),br.x),bl.x);
-		box.min.y = std::min(std::min(std::min(tl.y,tr.y),br.y),bl.y);
+		m_box.min.x = std::min(std::min(std::min(tl.x,tr.x),br.x),bl.x);
+		m_box.min.y = std::min(std::min(std::min(tl.y,tr.y),br.y),bl.y);
 
-		box.max.x = std::max(std::max(std::max(tl.x,tr.x),br.x),bl.x);
-		box.max.y = std::max(std::max(std::max(tl.y,tr.y),br.y),bl.y);
+		m_box.max.x = std::max(std::max(std::max(tl.x,tr.x),br.x),bl.x);
+		m_box.max.y = std::max(std::max(std::max(tl.y,tr.y),br.y),bl.y);
 	}
 } /* namespace PovisEngine */

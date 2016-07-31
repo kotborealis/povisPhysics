@@ -10,29 +10,16 @@
 namespace PovisEngine {
 
 EntityPhysicTest::EntityPhysicTest(Physics* physic, float x, float y, float w, float h, bool isStatic) {
+	awoo = Game::i().g()->loadTexture("assets/textures/awoo.png");
 	width = w;
 	height = h;
 
-	body = new PhysicBody(physic->bodyIDcounter++);
-	body->shape = new PhysicShapeBox(w, h);
-	body->tx = (Transform){v2(x,y),v2(w/2,h/2),0};
-	body->material = MaterialWood;
-	if(isStatic){
-		body->mass_data = {0,0,0,0};
-	}
-	else{
-		float mass = body->shape->computeMass(body->material);
-		body->mass_data = {mass, 1.f/mass, 0, 0};
-	}
-	body->velocity = v2(0,0);
-	body->force = v2(0,0);
-	body->gravity_scale = 1;
-
-	physic->attach(body);
+	PhysicShape* shape = new PhysicShapeBox(w, h);
+	body = new PhysicBody(physic, shape, {v2(x,y),v2(w/2,h/2),0}, MaterialWood, 1, isStatic);
 }
 
 EntityPhysicTest::~EntityPhysicTest() {
-
+	delete body;
 }
 
 void EntityPhysicTest::draw(){
@@ -51,7 +38,7 @@ void EntityPhysicTest::draw(){
 	renderCenter.x = width/2;
 	renderCenter.y = height/2;
 
-	Game::i().g()->drawTexture(-1,NULL,&renderRect,body->tx.angle,&renderCenter);
+	Game::i().g()->drawTexture(awoo,NULL,&renderRect,body->tx.angle,&renderCenter);
 	Game::i().g()->drawRect(&renderBboxRect, 0, 0, 0, 0xff);
 }
 

@@ -33,6 +33,8 @@ public:
 	PhysicBody* body;
 
 	float width, height;
+
+	short awoo;
 };
 
 } /* namespace PovisEngine */
