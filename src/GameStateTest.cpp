@@ -15,7 +15,7 @@ namespace PovisEngine {
 
 GameStateTest::GameStateTest(){
 	Logger::info("GameStateTest");
-	entities.push_back(new EntityPhysicTest(&physic,0.f,500.f,1000.f,100.f, true));
+	entities.push_back(new EntityPhysicTest(&physic,100.f,300.f,500.f,100.f, true));
 }
 
 GameStateTest::~GameStateTest() {

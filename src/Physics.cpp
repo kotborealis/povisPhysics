@@ -33,8 +33,8 @@ void Physics::deattach(PhysicBody* body){
 void Physics::update(float dt){
 	broadPhase();
 	narrowPhase();
-//	for(auto i = bodies.begin(); i != bodies.end(); i++)
-//		(*i)->force+=v2(0,9 * (*i)->mass_data.mass);
+	for(auto i = bodies.begin(); i != bodies.end(); i++)
+		(*i)->force+=v2(0,9 * (*i)->mass_data.mass);
 
 	for(auto i = bodies.begin(); i != bodies.end(); i++){
 		(*i)->tx.position+=(*i)->force;
@@ -64,8 +64,17 @@ void Physics::narrowPhase(){
 			ManifoldShapeBox manifold = BodyShapeBox_collision(a,b);
 			if(manifold.collision){
 				v2 mvt = manifold.axis*manifold.overlap;
-				a->force += mvt/2;
-				b->force -= mvt/2;
+				if(a->mass_data.mass == 0 && b->mass_data.mass == 0){
+					return;
+				}
+				else if(a->mass_data.mass != 0 && b->mass_data.mass != 0){
+					a->force += mvt/2;
+					b->force -= mvt/2;
+				}
+				else if(a->mass_data.mass != 0)
+					a->force += mvt;
+				else
+					b->force -= mvt;
 			}
 		}
 	}
@@ -163,11 +172,13 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 			if(overlap < manifold.overlap){
 				manifold.overlap = overlap;
 				manifold.axis = axis[i];
-				v2 atob = v2(center[1].x - center[0].x,center[1].y - center[0].y);
-				if(v2::dot(atob, axis[i]) > 0)
-					manifold.overlap *= -1;
 			}
 		}
+	}
+	if(manifold.collision){
+		v2 atob = v2(center[1].x - center[0].x,center[1].y - center[0].y);
+		if(v2::dot(atob, manifold.axis) > 0)
+			manifold.overlap *= -1;
 	}
 	return manifold;
 }

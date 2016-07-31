@@ -19,13 +19,11 @@ EntityPhysicTest::EntityPhysicTest(Physics* physic, float x, float y, float w, f
 	body->tx = (Transform){v2(x,y),v2(w/2,h/2),0};
 	body->material = MaterialWood;
 	if(isStatic){
-		Logger::info("Mass data"<<0);
 		body->mass_data = {0,0,0,0};
 	}
 	else{
 		float mass = body->shape->computeMass(body->material);
 		body->mass_data = {mass, 1.f/mass, 0, 0};
-		Logger::info("Mass data"<<mass);
 	}
 	body->velocity = v2(0,0);
 	body->force = v2(0,0);
