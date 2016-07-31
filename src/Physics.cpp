@@ -108,7 +108,7 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 	const float x[2] = {a->worldPosition().x,b->worldPosition().x};
 	const float y[2] = {a->worldPosition().y,b->worldPosition().y};
 	const v2 center[2] = {a->worldCenter(),b->worldCenter()};
-	const float angle[2] = {a->shape->angle,b->shape->angle};
+	const float angle[2] = {a->shape->getAngle(),b->shape->getAngle()};
 	const float width[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->width,dynamic_cast<PhysicShapeBox*>(b->shape)->width};
 	const float height[2] = {dynamic_cast<PhysicShapeBox*>(a->shape)->height,dynamic_cast<PhysicShapeBox*>(b->shape)->height};
 

@@ -32,7 +32,7 @@ void GameStateTest::handleEvent(SDL_Event* event){
 	if(event->type == SDL_MOUSEWHEEL){
 		EntityPhysicTest* o = static_cast<EntityPhysicTest*>(*entities.begin());
 		o->body->tx.angle += event->wheel.y;
-		o->body->shape->angle += event->wheel.y;
+		o->body->shape->rotate(event->wheel.y);
 	}
 }
 void GameStateTest::update(){

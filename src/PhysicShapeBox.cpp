@@ -15,11 +15,25 @@ namespace PovisEngine {
 		,width(w)
 		,height(h){
 			center = v2(w/2,h/2);
+			calcBbox();
 		}
 
 	PhysicShapeBox::~PhysicShapeBox(){};
 
 	AABB PhysicShapeBox::bbox(){
+		return box;
+	}
+
+	float PhysicShapeBox::computeMass(Material m){
+		return m.density * width * height / 1200;
+	}
+
+	void PhysicShapeBox::rotate(float rads){
+		angle += rads;
+		calcBbox();
+	}
+
+	void PhysicShapeBox::calcBbox(){
 		tl = (v2(0,0) - center);
 		tl.rotate(angle);
 		tl+=center;
@@ -39,15 +53,5 @@ namespace PovisEngine {
 
 		box.max.x = std::max(std::max(std::max(tl.x,tr.x),br.x),bl.x);
 		box.max.y = std::max(std::max(std::max(tl.y,tr.y),br.y),bl.y);
-
-		return box;
-	}
-
-	float PhysicShapeBox::computeMass(Material m){
-		return m.density * width * height / 1200;
-	}
-
-	void PhysicShapeBox::rotate(float rads){
-		angle += rads;
 	}
 } /* namespace PovisEngine */

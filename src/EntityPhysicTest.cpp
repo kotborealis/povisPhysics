@@ -15,7 +15,6 @@ EntityPhysicTest::EntityPhysicTest(Physics* physic, float x, float y, float w, f
 
 	body = new PhysicBody(physic->bodyIDcounter++);
 	body->shape = new PhysicShapeBox(w, h);
-	body->shape->angle = 0;
 	body->tx = (Transform){v2(x,y),v2(w/2,h/2),0};
 	body->material = MaterialWood;
 	if(isStatic){

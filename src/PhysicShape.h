@@ -20,8 +20,12 @@ public:
 	virtual AABB bbox()=0;
 	virtual float computeMass(Material m)=0;
 	virtual void rotate(float rads)=0;
+	float getAngle(){
+		return angle;
+	}
 
 	v2 center;
+protected:
 	float angle = 0;
 };
 

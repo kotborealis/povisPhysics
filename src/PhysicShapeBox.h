@@ -23,6 +23,8 @@ public:
 
 	float width, height;
 
+private:
+	void calcBbox();
 	AABB box;
 	v2 tl, tr, bl, br;
 };
