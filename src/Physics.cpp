@@ -33,12 +33,17 @@ void Physics::deattach(PhysicBody* body){
 void Physics::update(float dt){
 	broadPhase();
 	narrowPhase();
-	for(auto i = bodies.begin(); i != bodies.end(); i++)
-		(*i)->force+=v2(0,9 * (*i)->mass_data().mass);
 
 	for(auto i = bodies.begin(); i != bodies.end(); i++){
-		(*i)->tx.position+=(*i)->force;
-		(*i)->force = v2();
+		auto body = *i;
+		if(body->mass_data().mass == 0)
+			continue;
+
+		body->force += v2(0,9.8 * body->gravity_scale());
+		body->acceleration += body->force * body->mass_data().inv_mass;
+		body->tx.position += body->velocity * dt;
+		body->velocity += body->acceleration * dt;
+		body->force = v2();
 	}
 }
 
@@ -64,17 +69,6 @@ void Physics::narrowPhase(){
 			ManifoldShapeBox manifold = BodyShapeBox_collision(a,b);
 			if(manifold.collision){
 				v2 mvt = manifold.axis*manifold.overlap;
-				if(a->mass_data().mass == 0 && b->mass_data().mass == 0){
-					return;
-				}
-				else if(a->mass_data().mass != 0 && b->mass_data().mass != 0){
-					a->force += mvt/2;
-					b->force -= mvt/2;
-				}
-				else if(a->mass_data().mass != 0)
-					a->force += mvt;
-				else
-					b->force -= mvt;
 			}
 		}
 	}
@@ -94,6 +88,7 @@ ManifoldAABB Physics::AABB_collision(AABB a, AABB b){
 	_.collision = true;
 	return _;
 }
+
 ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 	ManifoldShapeBox manifold;
 

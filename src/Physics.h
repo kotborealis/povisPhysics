@@ -60,6 +60,8 @@ private:
 	ManifoldAABB AABB_collision(AABB, AABB);
 	ManifoldShapeBox BodyShapeBox_collision(PhysicBody*, PhysicBody*);
 
+	void BodyShapeBox_resolve(PhysicBody*, PhysicBody*, ManifoldShapeBox, ManifoldShapeBox);
+
 	std::list<PhysicBody*> bodies;
 	std::list<std::pair<PhysicBody*,PhysicBody*>> pairs;
 };
