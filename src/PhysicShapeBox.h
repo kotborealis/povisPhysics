@@ -20,6 +20,7 @@ public:
 
 	AABB bbox();
 	float mass(Material);
+	float inertia(Material);
 
 	void rotate(float);
 

@@ -20,6 +20,7 @@ public:
 
 	virtual AABB bbox()=0;
 	virtual float mass(Material)=0;
+	virtual float inertia(Material)=0;
 
 	virtual void rotate(float)=0;
 

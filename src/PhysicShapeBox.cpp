@@ -27,6 +27,9 @@ namespace PovisEngine {
 	float PhysicShapeBox::mass(Material m){
 		return m.density * m_width * m_height / 1200;
 	}
+	float PhysicShapeBox::inertia(Material m){
+		return 1.33333f * m_width * m_height * (m_width * m_width + m_height * m_height) * m.density;
+	}
 
 	void PhysicShapeBox::rotate(float rads){
 		m_angle += rads;
