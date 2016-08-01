@@ -24,11 +24,24 @@ PhysicBody::PhysicBody(Physics* physic, PhysicShape* shape, Transform tx, Materi
 	physic->attach(this);
 }
 
-
-
 PhysicBody::~PhysicBody(){
 	m_physic->deattach(this);
 	delete m_shape;
+}
+
+AABB PhysicBody::bbox(){
+	AABB box = m_shape->bbox();
+	box.min.x += tx.position.x;
+	box.min.y += tx.position.y;
+	box.max.x += tx.position.x;
+	box.max.y += tx.position.y;
+
+	return box;
+}
+
+void PhysicBody::rotate(float deg){
+	m_shape->rotate(deg);
+	tx.angle+=deg;
 }
 
 } /* namespace PovisEngine */

@@ -52,23 +52,17 @@ public:
 	PhysicBody(Physics*, PhysicShape*, Transform, Material, float = 1, bool = false);
 	~PhysicBody();
 
-	AABB bbox(){
-		AABB box = m_shape->bbox();
-		box.min.x += tx.position.x;
-		box.min.y += tx.position.y;
-		box.max.x += tx.position.x;
-		box.max.y += tx.position.y;
+	void rotate(float);
 
-		return box;
-	}
+	AABB bbox();
 	v2 position() const {return tx.position;}
 	v2 center() const {return m_shape->center() + tx.position;}
 
 	PhysicShape* shape() const {return m_shape;}
-
 	MassData mass_data() const {return m_mass_data;}
 
 	int id() const {return m_id;}
+	float gravity_scale() const {return m_gravity_scale;}
 
 
 	v2 force;
