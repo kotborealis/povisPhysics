@@ -5,18 +5,18 @@
  *      Author: kotborealis
  */
 
-#ifndef PHYSICSHAPEBOX_H_
-#define PHYSICSHAPEBOX_H_
+#ifndef SHAPEBOX_H_
+#define SHAPEBOX_H_
 
-#include "PhysicShape.h"
-#include "PhysicBody.h"
+#include "Body.h"
+#include "Shape.h"
 
 namespace PovisEngine {
 
-class PhysicShapeBox: public PhysicShape{
+class ShapeBox: public Shape{
 public:
-	PhysicShapeBox(float w, float h);
-	~PhysicShapeBox();
+	ShapeBox(float w, float h);
+	~ShapeBox();
 
 	AABB bbox();
 	float mass(Material);
@@ -36,4 +36,4 @@ private:
 
 } /* namespace PovisEngine */
 
-#endif /* PHYSICSHAPEBOX_H_ */
+#endif /* SHAPEBOX_H_ */

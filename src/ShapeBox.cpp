@@ -5,38 +5,38 @@
  *      Author: kotborealis
  */
 
-#include "PhysicShapeBox.h"
 #include <cmath>
 #include <algorithm>
+#include "ShapeBox.h"
 
 namespace PovisEngine {
-	PhysicShapeBox::PhysicShapeBox(float w, float h)
-		:PhysicShape()
+	ShapeBox::ShapeBox(float w, float h)
+		:Shape()
 		,m_width(w)
 		,m_height(h){
 			m_center = v2(w/2,h/2);
 			calcBbox();
 		}
 
-	PhysicShapeBox::~PhysicShapeBox(){};
+	ShapeBox::~ShapeBox(){};
 
-	AABB PhysicShapeBox::bbox(){
+	AABB ShapeBox::bbox(){
 		return m_box;
 	}
 
-	float PhysicShapeBox::mass(Material m){
+	float ShapeBox::mass(Material m){
 		return m.density * m_width * m_height / 1200;
 	}
-	float PhysicShapeBox::inertia(Material m){
-		return 1.33333f * m_width * m_height * (m_width * m_width + m_height * m_height) * m.density;
+	float ShapeBox::inertia(Material m){
+		return m.density * m_width * m_height / 1200;
 	}
 
-	void PhysicShapeBox::rotate(float rads){
+	void ShapeBox::rotate(float rads){
 		m_angle += rads;
 		calcBbox();
 	}
 
-	void PhysicShapeBox::calcBbox(){
+	void ShapeBox::calcBbox(){
 		v2 tl = (v2(0,0) - m_center);
 		tl.rotate(m_angle);
 		tl+=m_center;

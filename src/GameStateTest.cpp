@@ -8,6 +8,8 @@
 #include "GameStateTest.h"
 #include "Game.h"
 #include "EntityPhysicTest.h"
+#include <cstdlib>
+#include <ctime>
 
 #include <iostream>
 
@@ -15,7 +17,8 @@ namespace PovisEngine {
 
 GameStateTest::GameStateTest(){
 	Logger::info("GameStateTest");
-	entities.push_back(new EntityPhysicTest(&physic,100.f,300.f,500.f,100.f, true));
+	entities.push_back(new EntityPhysicTest(&physic,100.f,500.f,500.f,100.f, true));
+	srand(time(NULL));
 }
 
 GameStateTest::~GameStateTest() {
@@ -25,20 +28,18 @@ GameStateTest::~GameStateTest() {
 void GameStateTest::handleEvent(SDL_Event* event){
 	if(event->type == SDL_MOUSEBUTTONDOWN){
 		SDL_GetMouseState(&mouseX,&mouseY);
-		for(int i = 0; i < 10; i++){
-			entities.push_back(new EntityPhysicTest(&physic,mouseX+i*51,mouseY,50.f,50.f, false));
-		}
+		float w = rand()%50+30;
+		entities.push_back(new EntityPhysicTest(&physic,mouseX,mouseY,w,w, false));
 		Logger::info(entities.size());
 		return;
 	}
 	if(event->type == SDL_MOUSEWHEEL){
 		EntityPhysicTest* o = static_cast<EntityPhysicTest*>(*entities.begin());
-		o->body->tx.angle += event->wheel.y;
-		o->body->shape()->rotate(event->wheel.y);
+		o->body->rotate(event->wheel.y);
 	}
 }
 void GameStateTest::update(){
-	physic.update(0.02f);
+	physic.update(0.2f);
 }
 void GameStateTest::draw(){
 	for(auto it = entities.begin(); it != entities.end(); it++)

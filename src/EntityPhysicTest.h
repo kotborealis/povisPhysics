@@ -9,12 +9,12 @@
 #define ENTITYPHYSICTEST_H_
 
 #include "Entity.h"
-#include "PhysicBody.h"
-#include "PhysicShapeBox.h"
-#include "PhysicShape.h"
 #include "Game.h"
 #include "AABB.h"
+#include "Body.h"
 #include "Physics.h"
+#include "Shape.h"
+#include "ShapeBox.h"
 
 namespace PovisEngine {
 
@@ -30,7 +30,7 @@ public:
 	AABB bbox;
 	SDL_Rect renderBboxRect;
 
-	PhysicBody* body;
+	Body* body;
 
 	float width, height;
 

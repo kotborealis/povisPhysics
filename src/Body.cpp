@@ -5,11 +5,11 @@
  *      Author: kotborealis
  */
 
-#include "PhysicBody.h"
+#include "Body.h"
 
 namespace PovisEngine {
 
-PhysicBody::PhysicBody(Physics* physic, PhysicShape* shape, Transform tx, Material material, float gravity_scale, bool isStatic){
+Body::Body(Physics* physic, Shape* shape, Transform tx, Material material, float gravity_scale, bool isStatic){
 	m_id = physic->bodyIDcounter++;
 	m_physic = physic;
 	m_shape = shape;
@@ -19,17 +19,20 @@ PhysicBody::PhysicBody(Physics* physic, PhysicShape* shape, Transform tx, Materi
 
 
 	float mass = isStatic ? 0 : m_shape->mass(m_material);
-	m_mass_data = {mass, 1.f/mass, 0, 0};
+	float inertia = isStatic ? 0 : m_shape->inertia(m_material);
+	float inv_mass = isStatic ? 0 : 1.f/mass;
+	float inv_inertia = isStatic ? 0 : 1.f/mass;
+	m_mass_data = {mass, inv_mass, inertia, inv_inertia};
 
 	physic->attach(this);
 }
 
-PhysicBody::~PhysicBody(){
+Body::~Body(){
 	m_physic->deattach(this);
 	delete m_shape;
 }
 
-AABB PhysicBody::bbox(){
+AABB Body::bbox(){
 	AABB box = m_shape->bbox();
 	box.min.x += tx.position.x;
 	box.min.y += tx.position.y;
@@ -39,7 +42,7 @@ AABB PhysicBody::bbox(){
 	return box;
 }
 
-void PhysicBody::rotate(float deg){
+void Body::rotate(float deg){
 	m_shape->rotate(deg);
 	tx.angle+=deg;
 }

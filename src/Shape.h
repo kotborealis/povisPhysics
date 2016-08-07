@@ -5,18 +5,18 @@
  *      Author: kotborealis
  */
 
-#ifndef PHYSICSHAPE_H_
-#define PHYSICSHAPE_H_
+#ifndef SHAPE_H_
+#define SHAPE_H_
 
 #include "AABB.h"
 
 namespace PovisEngine {
-class PhysicBody;
+class Body;
 class Material;
-class PhysicShape {
+class Shape {
 public:
-	PhysicShape(){}
-	virtual ~PhysicShape(){};
+	Shape(){}
+	virtual ~Shape(){};
 
 	virtual AABB bbox()=0;
 	virtual float mass(Material)=0;
@@ -34,4 +34,4 @@ protected:
 
 } /* namespace PovisEngine */
 
-#endif /* PHYSICSHAPE_H_ */
+#endif /* SHAPE_H_ */

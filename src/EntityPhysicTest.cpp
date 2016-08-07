@@ -14,8 +14,10 @@ EntityPhysicTest::EntityPhysicTest(Physics* physic, float x, float y, float w, f
 	width = w;
 	height = h;
 
-	PhysicShape* shape = new PhysicShapeBox(w, h);
-	body = new PhysicBody(physic, shape, {v2(x,y),v2(w/2,h/2),0}, MaterialWood, 1, isStatic);
+	Shape* shape = new ShapeBox(w, h);
+	body = new Body(physic, shape, {v2(x,y),v2(w/2,h/2),0}, MaterialWood, 1, isStatic);
+
+	Logger::info("inertia "<<body->mass_data().inertia);
 }
 
 EntityPhysicTest::~EntityPhysicTest() {
@@ -38,7 +40,7 @@ void EntityPhysicTest::draw(){
 	renderCenter.x = width/2;
 	renderCenter.y = height/2;
 
-	Game::i().g()->drawTexture(awoo,NULL,&renderRect,body->tx.angle,&renderCenter);
+	Game::i().g()->drawTexture(-1,NULL,&renderRect,body->tx.angle,&renderCenter);
 	Game::i().g()->drawRect(&renderBboxRect, 0, 0, 0, 0xff);
 }
 

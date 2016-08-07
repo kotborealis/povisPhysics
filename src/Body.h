@@ -5,14 +5,14 @@
  *      Author: kotborealis
  */
 
-#ifndef PHYSICBODY_H_
-#define PHYSICBODY_H_
+#ifndef BODY_H_
+#define BODY_H_
 
 #include "v2.h"
 #include "Physics.h"
-#include "PhysicShape.h"
 #include "AABB.h"
 #include "Logger.h"
+#include "Shape.h"
 
 namespace PovisEngine {
 
@@ -47,10 +47,10 @@ struct Transform {
 
 class Physics;
 
-class PhysicBody {
+class Body {
 public:
-	PhysicBody(Physics*, PhysicShape*, Transform, Material, float = 1, bool = false);
-	~PhysicBody();
+	Body(Physics*, Shape*, Transform, Material, float = 1, bool = false);
+	~Body();
 
 	void rotate(float);
 
@@ -58,8 +58,9 @@ public:
 	v2 position() const {return tx.position;}
 	v2 center() const {return m_shape->center() + tx.position;}
 
-	PhysicShape* shape() const {return m_shape;}
+	Shape* shape() const {return m_shape;}
 	MassData mass_data() const {return m_mass_data;}
+	Material material() const {return m_material;}
 
 	int id() const {return m_id;}
 	float gravity_scale() const {return m_gravity_scale;}
@@ -68,8 +69,8 @@ public:
 	v2 force;
 	v2 velocity;
 	v2 acceleration;
-	v2 angular_velocity;
-	v2 angular_acceleration;
+	float angular_velocity = 0;
+	float angular_acceleration = 0;
 
 	Transform tx;
 
@@ -77,7 +78,7 @@ private:
 	int m_id;
 
 	Physics* m_physic;
-	PhysicShape* m_shape;
+	Shape* m_shape;
 
 	Material m_material;
 	MassData m_mass_data;
@@ -87,4 +88,4 @@ private:
 
 } /* namespace PovisEngine */
 
-#endif /* PHYSICBODY_H_ */
+#endif /* BODY_H_ */

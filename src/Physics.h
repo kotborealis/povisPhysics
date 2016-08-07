@@ -17,11 +17,11 @@
 
 #include "v2.h"
 #include "Logger.h"
-#include "PhysicShape.h"
-#include "PhysicShapeBox.h"
 #include "Game.h"
 #include "AABB.h"
 #include "Graphics.h"
+#include "Shape.h"
+#include "ShapeBox.h"
 
 #define PHYSICS_DEBUG true
 
@@ -34,22 +34,22 @@ struct Manifold{
 
 //Manifold for Box-Shape
 struct ManifoldShapeBox: public Manifold{
-	v2 axis;
-	float overlap;
+	v2 normal;
+	float penetration;
 };
 
 //Manifold for AABB
 struct ManifoldAABB: public Manifold{};
 
-class PhysicBody;
+class Body;
 
 class Physics {
 public:
 	Physics();
 	~Physics();
 
-	void attach(PhysicBody* body);
-	void deattach(PhysicBody* body);
+	void attach(Body* body);
+	void deattach(Body* body);
 
 	void update(float dt);
 	void broadPhase();
@@ -57,13 +57,16 @@ public:
 
 	unsigned short int bodyIDcounter = 0;
 private:
+	void integrateForce(Body*, float dt);
+	void integrateVelocity(Body*, float dt);
+
 	ManifoldAABB AABB_collision(AABB, AABB);
-	ManifoldShapeBox BodyShapeBox_collision(PhysicBody*, PhysicBody*);
+	ManifoldShapeBox BodyShapeBox_collision(Body*, Body*);
 
-	void BodyShapeBox_resolve(PhysicBody*, PhysicBody*, ManifoldShapeBox, ManifoldShapeBox);
+	void BodyShapeBox_resolve_collision(Body*, Body*, ManifoldShapeBox);
 
-	std::list<PhysicBody*> bodies;
-	std::list<std::pair<PhysicBody*,PhysicBody*>> pairs;
+	std::list<Body*> bodies;
+	std::list<std::pair<Body*,Body*>> pairs;
 };
 
 } /* namespace PovisEngine */

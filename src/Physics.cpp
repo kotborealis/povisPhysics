@@ -17,11 +17,11 @@ Physics::~Physics() {
 	bodies.clear();
 }
 
-void Physics::attach(PhysicBody* body){
+void Physics::attach(Body* body){
 	bodies.push_back(body);
 }
 
-void Physics::deattach(PhysicBody* body){
+void Physics::deattach(Body* body){
 	for(auto it = bodies.begin(); it != bodies.end(); it++){
 		if(*it == body){
 			bodies.erase(it);
@@ -31,20 +31,30 @@ void Physics::deattach(PhysicBody* body){
 }
 
 void Physics::update(float dt){
-	broadPhase();
-	narrowPhase();
+	for(auto i = bodies.begin(); i != bodies.end(); i++)
+		integrateForce(*i, dt);
 
-	for(auto i = bodies.begin(); i != bodies.end(); i++){
-		auto body = *i;
-		if(body->mass_data().mass == 0)
-			continue;
+	for(auto i = bodies.begin(); i != bodies.end(); i++)
+		integrateVelocity(*i, dt);
 
-		body->force += v2(0,9.8 * body->gravity_scale());
-		body->acceleration += body->force * body->mass_data().inv_mass;
-		body->tx.position += body->velocity * dt;
-		body->velocity += body->acceleration * dt;
-		body->force = v2();
+	for(int i = 0; i < 10; i++){
+		broadPhase();
+		narrowPhase();
 	}
+}
+
+void Physics::integrateForce(Body* body, float dt){
+	if(body->mass_data().mass == 0) return;
+
+	const v2 gravity = v2(0,9.8f);
+
+	body->velocity += (body->force * body->mass_data().inv_mass + gravity) * dt;
+}
+
+void Physics::integrateVelocity(Body* body, float dt){
+	if(body->mass_data().mass == 0) return;
+
+	body->tx.position += body->velocity * dt;
 }
 
 void Physics::broadPhase(){
@@ -53,22 +63,21 @@ void Physics::broadPhase(){
 		for(auto j = std::next(i); j != bodies.end(); j++){
 			ManifoldAABB _ = AABB_collision((*i)->bbox(),(*j)->bbox());
 			if(_.collision){
-				pairs.push_back(std::pair<PhysicBody*,PhysicBody*>(*i,*j));
+				pairs.push_back(std::pair<Body*,Body*>(*i,*j));
 			}
 		}
 	}
 }
 
-//http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
 void Physics::narrowPhase(){
 	for(auto i = pairs.begin(); i != pairs.end(); i++){
-		PhysicBody* a = (*i).first;
-		PhysicBody* b = (*i).second;
+		Body* a = (*i).first;
+		Body* b = (*i).second;
 
-		if(dynamic_cast<PhysicShapeBox*>(a->shape()) != NULL && dynamic_cast<PhysicShapeBox*>(b->shape()) != NULL){
+		if(dynamic_cast<ShapeBox*>(a->shape()) != NULL && dynamic_cast<ShapeBox*>(b->shape()) != NULL){
 			ManifoldShapeBox manifold = BodyShapeBox_collision(a,b);
 			if(manifold.collision){
-				v2 mvt = manifold.axis*manifold.overlap;
+				BodyShapeBox_resolve_collision(a,b,manifold);
 			}
 		}
 	}
@@ -89,10 +98,10 @@ ManifoldAABB Physics::AABB_collision(AABB a, AABB b){
 	return _;
 }
 
-ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
+ManifoldShapeBox Physics::BodyShapeBox_collision(Body* a, Body* b){
 	ManifoldShapeBox manifold;
 
-	if(dynamic_cast<PhysicShapeBox*>(a->shape()) == NULL || dynamic_cast<PhysicShapeBox*>(b->shape()) == NULL){
+	if(dynamic_cast<ShapeBox*>(a->shape()) == NULL || dynamic_cast<ShapeBox*>(b->shape()) == NULL){
 		manifold.collision = false;
 		return manifold;
 	}
@@ -104,8 +113,8 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 	const float y[2] = {a->position().y,b->position().y};
 	const v2 center[2] = {a->center(),b->center()};
 	const float angle[2] = {a->shape()->angle(),b->shape()->angle()};
-	const float width[2] = {dynamic_cast<PhysicShapeBox*>(a->shape())->width(),dynamic_cast<PhysicShapeBox*>(b->shape())->width()};
-	const float height[2] = {dynamic_cast<PhysicShapeBox*>(a->shape())->height(),dynamic_cast<PhysicShapeBox*>(b->shape())->height()};
+	const float width[2] = {dynamic_cast<ShapeBox*>(a->shape())->width(),dynamic_cast<ShapeBox*>(b->shape())->width()};
+	const float height[2] = {dynamic_cast<ShapeBox*>(a->shape())->height(),dynamic_cast<ShapeBox*>(b->shape())->height()};
 
 	corners[0] = (v2(x[0],            y[0])             - center[0]);
 	corners[1] = (v2(x[0] + width[0], y[0])             - center[0]);
@@ -143,7 +152,7 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 	float max[2];
 	float tmp;
 	manifold.collision = true;
-	manifold.overlap = FLT_MAX;
+	manifold.penetration = FLT_MAX;
 
 	for(short i = 0; i < 4; i++){
 		for(short j = 0; j < 8; j++){
@@ -164,18 +173,39 @@ ManifoldShapeBox Physics::BodyShapeBox_collision(PhysicBody* a, PhysicBody* b){
 			float overlap2 = max[1] - min[0];
 			float overlap = overlap1 < overlap2 ? overlap1 : overlap2;
 
-			if(overlap < manifold.overlap){
-				manifold.overlap = overlap;
-				manifold.axis = axis[i];
+			if(overlap < manifold.penetration){
+				manifold.penetration = overlap;
+				manifold.normal = axis[i];
 			}
 		}
 	}
-	if(manifold.collision){
-		v2 atob = v2(center[1].x - center[0].x,center[1].y - center[0].y);
-		if(v2::dot(atob, manifold.axis) > 0)
-			manifold.overlap *= -1;
-	}
 	return manifold;
+}
+
+void Physics::BodyShapeBox_resolve_collision(Body* a, Body* b, ManifoldShapeBox manifold){
+	v2 atob = v2(b->center().x - a->center().x,b->center().y - a->center().y);
+	float k = v2::dot(atob, manifold.normal) > 0 ? 1 : -1;
+
+	v2 relative_velocity = b->velocity - a->velocity;
+	float velocity_among_normal = v2::dot(relative_velocity, manifold.normal);
+
+	if(velocity_among_normal * k > 0)return;
+
+	float e = std::min(a->material().restitution, b->material().restitution);
+
+	float j = -(1 + e) * velocity_among_normal;
+	j /= a->mass_data().inv_mass + b->mass_data().inv_mass;
+
+	v2 impulse = manifold.normal * j;
+
+	a->velocity -= impulse * a->mass_data().inv_mass;
+	b->velocity += impulse * b->mass_data().inv_mass;
+
+	const float precent = .2f;
+	const float slop = 2.f;
+	v2 correction = manifold.normal * precent * std::max(manifold.penetration - slop, 0.f) / (a->mass_data().inv_mass + b->mass_data().inv_mass);
+	a->tx.position -= correction * a->mass_data().inv_mass;
+	b->tx.position += correction * b->mass_data().inv_mass;
 }
 
 } /* namespace PovisEngine */
