@@ -31,16 +31,21 @@ void Physics::deattach(Body* body){
 }
 
 void Physics::update(float dt){
-	for(auto i = bodies.begin(); i != bodies.end(); i++)
-		integrateForce(*i, dt);
-
-	for(auto i = bodies.begin(); i != bodies.end(); i++)
-		integrateVelocity(*i, dt);
+	for(auto i = bodies.begin(); i != bodies.end(); i++){
+		(*i)->force = v2(0,0);
+		(*i)->torque = 0;
+	}
 
 	for(int i = 0; i < 10; i++){
 		broadPhase();
 		narrowPhase();
 	}
+
+	for(auto i = bodies.begin(); i != bodies.end(); i++)
+		integrateForce(*i, dt);
+
+	for(auto i = bodies.begin(); i != bodies.end(); i++)
+		integrateVelocity(*i, dt);
 }
 
 void Physics::integrateForce(Body* body, float dt){
@@ -55,6 +60,8 @@ void Physics::integrateVelocity(Body* body, float dt){
 	if(body->mass_data().mass == 0) return;
 
 	body->tx.position += body->velocity * dt;
+
+	integrateForce(body,dt);
 }
 
 void Physics::broadPhase(){

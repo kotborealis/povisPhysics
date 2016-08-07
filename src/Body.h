@@ -68,9 +68,6 @@ public:
 
 	v2 force;
 	v2 velocity;
-	v2 acceleration;
-	float angular_velocity = 0;
-	float angular_acceleration = 0;
 
 	Transform tx;
 
