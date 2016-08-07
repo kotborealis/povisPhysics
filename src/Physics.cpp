@@ -33,7 +33,6 @@ void Physics::deattach(Body* body){
 void Physics::update(float dt){
 	for(auto i = bodies.begin(); i != bodies.end(); i++){
 		(*i)->force = v2(0,0);
-		(*i)->torque = 0;
 	}
 
 	for(int i = 0; i < 10; i++){
