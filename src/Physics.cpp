@@ -31,9 +31,9 @@ void Physics::deattach(Body* body){
 }
 
 void Physics::update(float dt){
-	for(auto i = bodies.begin(); i != bodies.end(); i++){
+	this->dt = dt;
+	for(auto i = bodies.begin(); i != bodies.end(); i++)
 		(*i)->force = v2(0,0);
-	}
 
 	for(int i = 0; i < 10; i++){
 		broadPhase();
@@ -49,8 +49,6 @@ void Physics::update(float dt){
 
 void Physics::integrateForce(Body* body, float dt){
 	if(body->mass_data().mass == 0) return;
-
-	const v2 gravity = v2(0,9.8f);
 
 	body->velocity += (body->force * body->mass_data().inv_mass + gravity) * dt;
 }
@@ -195,9 +193,14 @@ void Physics::BodyShapeBox_resolve_collision(Body* a, Body* b, ManifoldShapeBox 
 	v2 relative_velocity = b->velocity - a->velocity;
 	float velocity_among_normal = v2::dot(relative_velocity, manifold.normal);
 
+	if(relative_velocity.square_length() < (this->dt * gravity_y * this->dt * gravity_y) + EPSILON)
+		manifold.resting = true;
+	else
+		manifold.resting = false;
+
 	if(velocity_among_normal * k > 0)return;
 
-	float e = std::min(a->material().restitution, b->material().restitution);
+	float e = manifold.resting ? .0f : std::min(a->material().restitution, b->material().restitution);
 
 	float j = -(1 + e) * velocity_among_normal;
 	j /= a->mass_data().inv_mass + b->mass_data().inv_mass;
